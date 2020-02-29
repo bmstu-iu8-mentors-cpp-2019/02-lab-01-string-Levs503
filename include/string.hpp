@@ -5,6 +5,7 @@
 
 #include <cstddef>
 #include <iostream>
+#include <utility>
 
 class String {
  public:
@@ -18,10 +19,12 @@ class String {
   /// <param name="rhs">Объект, который копируем </param>
   String(const String& rhs);
 
+  explicit String(const size_t size);
+
   /// Пользовательский конструктор
   /// <param name="data">Данные, которые требуется поместить в создаваемый
   /// объект </param>
-  String(const char* data);
+  explicit String(const char* data);
 
   /// Оператор присваивания
   /// <param name="data">Объект, который копируем </param>
@@ -112,7 +115,8 @@ class String {
   friend std::ostream& operator<<(std::ostream&, const String&);
 
  private:
-  char* Data;
+  char* array;
+  size_t length;
 };
 
 /// Оператор +
