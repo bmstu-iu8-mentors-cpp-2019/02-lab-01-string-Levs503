@@ -33,7 +33,7 @@ String::String(const char* data) {
     i++;
   }
   array = new char[length];
-  std::copy(data.array, &data.array[length], array);
+  std::copy(data, &data[length], array);
 }
 
 String& String::operator=(const String& rhs) {
