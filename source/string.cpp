@@ -109,149 +109,148 @@ size_t String::Find(const String& substr) const {
       if (size == finalsize) return position;
     } else {
       i = position;
-      position = 0;
+      position = i + 1;
       size = 0;
     }
   }
   return -1;
-}
 
-bool String::operator<(const String& rhs) const {
-  if (length < rhs.length) return true;
-  if (length > rhs.length) return false;
-  for (size_t i = 0; i < length; i++) {
-    if (array[i] < rhs.array[i]) return true;
-    if (array[i] > rhs.array[i]) return false;
+  bool String::operator<(const String& rhs) const {
+    if (length < rhs.length) return true;
+    if (length > rhs.length) return false;
+    for (size_t i = 0; i < length; i++) {
+      if (array[i] < rhs.array[i]) return true;
+      if (array[i] > rhs.array[i]) return false;
+    }
+    return false;
   }
-  return false;
-}
 
-void String::Replace(char oldSymbol, char newSymbol) {
-  for (size_t i = 0; i < length; i++) {
-    if (array[i] == oldSymbol) array[i] = newSymbol;
-  }
-}
-
-size_t String::Size() const { return length; }
-
-bool String::Empty() const {
-  if (length == 0) return true;
-  return false;
-}
-
-char String::operator[](size_t index) const { return array[index]; }
-
-char& String::operator[](size_t index) { return array[index]; }
-
-void String::RTrim(char symbol) {
-  size_t lengthsave = length;
-  for (size_t i = length - 1; i; i--) {
-    if (array[i] == symbol) {
-      --lengthsave;
-    } else {
-      break;
+  void String::Replace(char oldSymbol, char newSymbol) {
+    for (size_t i = 0; i < length; i++) {
+      if (array[i] == oldSymbol) array[i] = newSymbol;
     }
   }
-  char* save = new char[lengthsave];
-  for (size_t i = 0; i < lengthsave; i++) {
-    save[i] = array[i];
-  }
-  delete[] array;
-  length = lengthsave;
-  array = new char[length];
-  for (size_t i = 0; i < lengthsave; i++) {
-    array[i] = save[i];
-  }
-  delete[] save;
-  save = nullptr;
-}
 
-void String::LTrim(char symbol) {
-  size_t lengthremove = 0;
-  for (size_t i = 0; i < length; i++) {
-    if (array[i] == symbol) {
-      ++lengthremove;
-    } else {
-      break;
+  size_t String::Size() const { return length; }
+
+  bool String::Empty() const {
+    if (length == 0) return true;
+    return false;
+  }
+
+  char String::operator[](size_t index) const { return array[index]; }
+
+  char& String::operator[](size_t index) { return array[index]; }
+
+  void String::RTrim(char symbol) {
+    size_t lengthsave = length;
+    for (size_t i = length - 1; i; i--) {
+      if (array[i] == symbol) {
+        --lengthsave;
+      } else {
+        break;
+      }
+    }
+    char* save = new char[lengthsave];
+    for (size_t i = 0; i < lengthsave; i++) {
+      save[i] = array[i];
+    }
+    delete[] array;
+    length = lengthsave;
+    array = new char[length];
+    for (size_t i = 0; i < lengthsave; i++) {
+      array[i] = save[i];
+    }
+    delete[] save;
+    save = nullptr;
+  }
+
+  void String::LTrim(char symbol) {
+    size_t lengthremove = 0;
+    for (size_t i = 0; i < length; i++) {
+      if (array[i] == symbol) {
+        ++lengthremove;
+      } else {
+        break;
+      }
+    }
+    char* save = new char[length];
+    for (size_t i = 0; i < length; i++) {
+      save[i] = array[i];
+    }
+    delete[] array;
+    length = length - lengthremove;
+    array = new char[length];
+    for (size_t i = 0; i < length; i++) {
+      array[i] = save[i + lengthremove];
+    }
+    delete[] save;
+    save = nullptr;
+  }
+
+  void String::swap(String & oth) {
+    String save(oth);
+    oth.length = length;
+    length = save.length;
+    delete[] oth.array;
+    oth.array = new char[oth.length];
+    for (size_t i = 0; i < oth.length; i++) {
+      oth.array[i] = array[i];
+    }
+    delete[] array;
+    array = new char[length];
+    for (size_t i = 0; i < length; i++) {
+      array[i] = save.array[i];
     }
   }
-  char* save = new char[length];
-  for (size_t i = 0; i < length; i++) {
-    save[i] = array[i];
-  }
-  delete[] array;
-  length = length - lengthremove;
-  array = new char[length];
-  for (size_t i = 0; i < length; i++) {
-    array[i] = save[i + lengthremove];
-  }
-  delete[] save;
-  save = nullptr;
-}
 
-void String::swap(String& oth) {
-  String save(oth);
-  oth.length = length;
-  length = save.length;
-  delete[] oth.array;
-  oth.array = new char[oth.length];
-  for (size_t i = 0; i < oth.length; i++) {
-    oth.array[i] = array[i];
-  }
-  delete[] array;
-  array = new char[length];
-  for (size_t i = 0; i < length; i++) {
-    array[i] = save.array[i];
-  }
-}
-
-std::ostream& operator<<(std::ostream& out, const String& opa) {
-  for (size_t i = 0; i < opa.length; i++) {
-    out << opa.array[i];
-  }
-  return out;
-}
-
-String operator+(const String& a, const String& b) {
-  /* String orig;
-    orig.length=a.length+b.length;
-    for (size_t i=0; i<a.length; i++){
-          orig.array[i]=a.array[i];
+  std::ostream& operator<<(std::ostream& out, const String& opa) {
+    for (size_t i = 0; i < opa.length; i++) {
+      out << opa.array[i];
     }
-    for (size_t i=a.length; i<orig.length; i++){
-          orig.array[i]=b.array[i-a.length];
-    }
-    return orig;*/
-  String c(a);
-  c += b;
-  return c;
-}
+    return out;
+  }
 
-String operator*(const String& a, unsigned int b) {
-  /* String orig(a.length*b);
-   for (size_t i=0; i<orig.length; i++){
-     orig.array[i]=a.array[i % a.length];
-   }
-   return orig;*/
-  String c(a);
-  c *= b;
-  return c;
-}
+  String operator+(const String& a, const String& b) {
+    /* String orig;
+      orig.length=a.length+b.length;
+      for (size_t i=0; i<a.length; i++){
+            orig.array[i]=a.array[i];
+      }
+      for (size_t i=a.length; i<orig.length; i++){
+            orig.array[i]=b.array[i-a.length];
+      }
+      return orig;*/
+    String c(a);
+    c += b;
+    return c;
+  }
 
-bool operator!=(const String& a, const String& b) {
-  /* if(a.length!=b.length) {return true;}
-   else{
-     for (size_t i=0; i<b.length; i++){
-           if (a.array[i]!=b.aarra[i]) return true;
+  String operator*(const String& a, unsigned int b) {
+    /* String orig(a.length*b);
+     for (size_t i=0; i<orig.length; i++){
+       orig.array[i]=a.array[i % a.length];
      }
-     return false;
-   }
-}*/
-  if (a == b) return false;
-  return true;
-}
+     return orig;*/
+    String c(a);
+    c *= b;
+    return c;
+  }
 
-bool operator>(const String& a, const String& b) {
-  if (a != b || a < b) return false;
-  return true;
-}
+  bool operator!=(const String& a, const String& b) {
+    /* if(a.length!=b.length) {return true;}
+     else{
+       for (size_t i=0; i<b.length; i++){
+             if (a.array[i]!=b.aarra[i]) return true;
+       }
+       return false;
+     }
+  }*/
+    if (a == b) return false;
+    return true;
+  }
+
+  bool operator>(const String& a, const String& b) {
+    if (a != b || a < b) return false;
+    return true;
+  }
