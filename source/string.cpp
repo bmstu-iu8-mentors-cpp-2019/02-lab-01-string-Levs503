@@ -4,12 +4,10 @@
 //
 #include "string.hpp"
 
+#include <algorithm>
 #include <iostream>
 
-String::~String() {
-  delete[] array;
-  array = nullptr;
-}
+String::~String() { delete[] array; }
 
 String::String() {
   array = new char[0];
@@ -24,9 +22,10 @@ String::String(const size_t size) {
 String::String(const String& rhs) {
   length = rhs.length;
   array = new char[length];
-  for (size_t i = 0; i < length; i++) {
-    array[i] = rhs.array[i];
-  }
+  /*for (size_t i = 0; i < length; i++) {
+          array[i] = rhs.array[i];
+  }*/
+  std::copy(rhs.array, &rhs.array[length], array);
 }
 
 String::String(const char* data) {
@@ -47,9 +46,10 @@ String& String::operator=(const String& rhs) {
     delete[] array;
     length = rhs.length;
     array = new char[length];
-    for (size_t i = 0; i < length; i++) {
-      array[i] = rhs.array[i];
-    }
+    /*for (size_t i = 0; i < length; i++) {
+            array[i] = rhs.array[i];
+    }*/
+    std::copy(rhs.array, &rhs.array[length], array);
   }
   return *this;
 }
@@ -58,21 +58,24 @@ String& String::operator+=(const String& rhs) {
   String save(*this);
   delete[] array;
   array = new char[length + rhs.length];
-  for (size_t i = 0; i < length; i++) {
-    array[i] = save.array[i];
-  }
-  for (size_t i = length; i < length + rhs.length; i++) {
-    array[i] = rhs.array[i - length];
-  }
+  /*for (size_t i = 0; i < length; i++) {
+          array[i] = save.array[i];
+  }*/
+  std::copy(save.array, &save.array[length], array);
+  /*for (size_t i = length; i < length + rhs.length; i++) {
+          array[i] = rhs.array[i - length];
+  }*/
+  std::copy(rhs.array, &rhs.array[rhs.length], array);
   length += rhs.length;
   return *this;
 }
 
 String& String::operator*=(unsigned int m) {
   char* save = new char[length];
-  for (size_t i = 0; i < length; i++) {
-    save[i] = array[i];
-  }
+  /*for (size_t i = 0; i < length; i++) {
+          save[i] = array[i];
+  }*/
+  std::copy(array, &array[length], save);
   size_t lengthsave = length;
   length *= m;
   delete[] array;
@@ -88,9 +91,10 @@ String& String::operator*=(unsigned int m) {
 bool String::operator==(const String& rhs) const {
   if (length == rhs.length) {
     for (size_t i = 0; i < length; i++) {
-      if (array[i] != rhs.array[i]) {
-        return false;
-      }
+      /*if (array[i] != rhs.array[i]) {
+              return false;
+      }*/
+      std::copy(rhs.array, &rhs.array[length], array);
     }
     return true;
   } else {
@@ -153,15 +157,17 @@ void String::RTrim(char symbol) {
     }
   }
   char* save = new char[lengthsave];
-  for (size_t i = 0; i < lengthsave; i++) {
-    save[i] = array[i];
-  }
+  /*for (size_t i = 0; i < lengthsave; i++) {
+          save[i] = array[i];
+  }*/
+  std::copy(array, &array[lengthsave], save);
   delete[] array;
   length = lengthsave;
   array = new char[length];
-  for (size_t i = 0; i < lengthsave; i++) {
-    array[i] = save[i];
-  }
+  /*for (size_t i = 0; i < lengthsave; i++) {
+          array[i] = save[i];
+  }*/
+  std::copy(save, &save[lengthsave], array);
   delete[] save;
   save = nullptr;
 }
@@ -176,15 +182,17 @@ void String::LTrim(char symbol) {
     }
   }
   char* save = new char[length];
-  for (size_t i = 0; i < length; i++) {
-    save[i] = array[i];
-  }
+  /*for (size_t i = 0; i < length; i++) {
+          save[i] = array[i];
+  }*/
+  std::copy(array, &array[length], save);
   delete[] array;
   length = length - lengthremove;
   array = new char[length];
-  for (size_t i = 0; i < length; i++) {
-    array[i] = save[i + lengthremove];
-  }
+  /*for (size_t i = 0; i < length; i++) {
+          array[i] = save[i + lengthremove];
+  }*/
+  std::copy(&save[lengthremove], &save[length + lengthremove], array);
   delete[] save;
   save = nullptr;
 }
@@ -195,14 +203,16 @@ void String::swap(String& oth) {
   length = save.length;
   delete[] oth.array;
   oth.array = new char[oth.length];
-  for (size_t i = 0; i < oth.length; i++) {
-    oth.array[i] = array[i];
-  }
+  /*for (size_t i = 0; i < oth.length; i++) {
+          oth.array[i] = array[i];
+  }*/
+  std::copy(array, &array[oth.length], oth.array);
   delete[] array;
   array = new char[length];
-  for (size_t i = 0; i < length; i++) {
-    array[i] = save.array[i];
-  }
+  /*for (size_t i = 0; i < length; i++) {
+          array[i] = save.array[i];
+  }*/
+  std::copy(save.array, &save.array[length], array);
 }
 
 std::ostream& operator<<(std::ostream& out, const String& opa) {
