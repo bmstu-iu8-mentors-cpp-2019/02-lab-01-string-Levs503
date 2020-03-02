@@ -114,6 +114,10 @@ class String {
 
   friend std::ostream& operator<<(std::ostream&, const String&);
 
+  friend String operator*(const String& a, unsigned int b);
+
+  friend String operator+(const String& a, const String& b);
+
  private:
   char* array;
   size_t length;

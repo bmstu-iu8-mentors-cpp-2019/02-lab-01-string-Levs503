@@ -29,8 +29,8 @@ find_package(GTest CONFIG REQUIRED)
 
 add_library(02-lab-01-string-Lev STATIC
         # ${CMAKE_CURRENT_SOURCE_DIR}/include/string.hpp
-        # ${CMAKE_CURRENT_SOURCE_DIR}/sources/string.cpp
-        source/string.cpp source/string.cpp)
+        # ${CMAKE_CURRENT_SOURCE_DIR}/source/string.cpp
+        )
 add_executable(tests
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/string_unittest.cpp
 )
@@ -38,13 +38,13 @@ add_executable(tests
 target_include_directories(02-lab-01-string-Lev
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-target_include_directories(tests 
+target_include_directories(tests
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 target_link_libraries(tests GTest::main 02-lab-01-string-Lev)
 
 enable_testing()
-add_test(NAME unit_tests COMMAND tests) 
+add_test(NAME unit_tests COMMAND tests)
 
 if(BUILD_COVERAGE)
   set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
