@@ -169,7 +169,6 @@ void String::swap(String& oth) {
   array = savechar;
   oth.length = length;
   length = savesize;
-  delete[] savechar;
 }
 
 std::ostream& operator<<(std::ostream& out, const String& opa) {
