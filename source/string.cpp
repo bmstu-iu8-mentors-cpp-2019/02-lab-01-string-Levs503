@@ -5,6 +5,7 @@
 #include "string.hpp"
 
 #include <algorithm>
+#include <cstring>
 #include <iostream>
 
 String::~String() { delete[] array; }
@@ -172,12 +173,12 @@ String operator+(const String& a, const String& b) {
 
 String operator*(const String& a, unsigned int b) {
   String c(a.length * b);
-  for (int i = 0; i < b; i++) {
+  for (unsigned int i = 0; i < b; i++) {
     std::copy(a.array, a.array + a.length, c.array + a.length * i);
   }
   return c;
 }
 
-bool operator!=(const String& a, const String& b) { return !(a == b) }
+bool operator!=(const String& a, const String& b) { return !(a == b); }
 
 bool operator>(const String& a, const String& b) { return !(a < b || a == b); }
