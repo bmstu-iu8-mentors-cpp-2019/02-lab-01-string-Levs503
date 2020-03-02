@@ -163,15 +163,13 @@ void String::LTrim(char symbol) {
 }
 
 void String::swap(String& oth) {
-  String save(oth);
+  char* savechar = oth.array;
+  size_t savesize = oth.length;
+  oth.array = array;
+  array = savechar;
   oth.length = length;
-  length = save.length;
-  delete[] oth.array;
-  oth.array = new char[oth.length];
-  std::copy(array, &array[oth.length], oth.array);
-  delete[] array;
-  array = new char[length];
-  std::copy(save.array, &save.array[length], array);
+  length = savesize;
+  delete[] savechar;
 }
 
 std::ostream& operator<<(std::ostream& out, const String& opa) {
