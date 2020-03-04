@@ -70,7 +70,7 @@ size_t String::Find(const String& substr) const {
   size_t finalsize = substr.length;
   size_t size = 0;
   size_t position = 0;
-  for (size_t i = 0; i < length - substr.size, i++) {
+  for (size_t i = 0; i < length - substr.length, i++) {
     if (array[i] == substr.array[size]) {
       if (size == 0) position = i;
       size++;
