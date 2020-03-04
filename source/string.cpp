@@ -52,6 +52,7 @@ String& String::operator*=(unsigned int m) {
   for (size_t i = 0; i < length; i++) {
     array[i] = save[i % (length / m)];
   }
+  delete[] save;
   return *this;
 }
 
