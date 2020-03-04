@@ -36,7 +36,7 @@ String& String::operator=(const String& rhs) {
 }
 
 String& String::operator+=(const String& rhs) {
-  char* save[length];
+  char* save = new char[length];
   std::copy(array, array + length, save);
   array = new char[length + rhs.length];
   std::copy(save, save + length, array);
@@ -47,13 +47,13 @@ String& String::operator+=(const String& rhs) {
 }
 
 String& String::operator*=(unsigned int m) {
-    char* save = array;
-    length *= m;
-    array = new char[length];
-    for (size_t i = 0; i < length; i++) {
-        array[i] = save[i % (length/m)];
-    }
-    return *this;
+  char* save = array;
+  length *= m;
+  array = new char[length];
+  for (size_t i = 0; i < length; i++) {
+    array[i] = save[i % (length / m)];
+  }
+  return *this;
 }
 
 bool String::operator==(const String& rhs) const {
