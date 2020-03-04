@@ -36,8 +36,7 @@ String& String::operator=(const String& rhs) {
 }
 
 String& String::operator+=(const String& rhs) {
-  char* save = new char[length];
-  std::copy(array, array + length, save);
+  char* save = array;
   array = new char[length + rhs.length];
   std::copy(save, save + length, array);
   std::copy(rhs.array, rhs.array + rhs.length, array + length);
