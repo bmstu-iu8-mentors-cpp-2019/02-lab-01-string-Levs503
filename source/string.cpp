@@ -36,27 +36,24 @@ String& String::operator=(const String& rhs) {
 }
 
 String& String::operator+=(const String& rhs) {
-  String save(*this);
-  delete[] array;
+  char* save[length];
+  std::copy(array, array + length, save);
   array = new char[length + rhs.length];
-  std::copy(save.array, save.array + length, array);
+  std::copy(save, save + length, array);
   std::copy(rhs.array, rhs.array + rhs.length, array + length);
   length += rhs.length;
+  delete[] save;
   return *this;
 }
 
 String& String::operator*=(unsigned int m) {
-  char* save = new char[length];
-  std::copy(array, array + length, save);
-  size_t lengthsave = length;
-  length *= m;
-  delete[] array;
-  array = new char[length];
-  for (size_t i = 0; i < length; i++) {
-    array[i] = save[i % lengthsave];
-  }
-  delete[] save;
-  return *this;
+    char* save = array;
+    length *= m;
+    array = new char[length];
+    for (size_t i = 0; i < length; i++) {
+        array[i] = save[i % (length/m)];
+    }
+    return *this;
 }
 
 bool String::operator==(const String& rhs) const {
@@ -65,16 +62,15 @@ bool String::operator==(const String& rhs) const {
       std::copy(rhs.array, rhs.array + length, array);
     }
     return true;
-  } else {
-    return false;
   }
+  return false;
 }
 
 size_t String::Find(const String& substr) const {
   size_t finalsize = substr.length;
   size_t size = 0;
   size_t position = 0;
-  for (size_t i = 0; i < length; i++) {
+  for (size_t i = 0; i < length - substr.size, i++) {
     if (array[i] == substr.array[size]) {
       if (size == 0) position = i;
       size++;
