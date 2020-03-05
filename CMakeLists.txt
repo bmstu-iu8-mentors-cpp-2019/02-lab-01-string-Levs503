@@ -28,7 +28,6 @@ hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
 add_library(02-lab-01-string-Lev STATIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/string.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/source/string.cpp
         )
 add_executable(tests
