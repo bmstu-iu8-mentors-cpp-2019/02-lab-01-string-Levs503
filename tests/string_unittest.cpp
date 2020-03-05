@@ -17,9 +17,9 @@ TEST(String, ConstructAssign) {
   s2 = s1;
   s2[0] = 's';
 
-  EXPECT_EQ("Some string", s0);
-  EXPECT_EQ("Some String", s1);
-  EXPECT_EQ("some String", s2);
+  EXPECT_EQ(String("Some string"), s0);
+  EXPECT_EQ(String("Some String"), s1);
+  EXPECT_EQ(String("some String"), s2);
   EXPECT_EQ(String("some string"), String(data));
 }
 
@@ -43,7 +43,7 @@ TEST(String, GetByIndex) {
 
 TEST(String, Append) {
   String s1("some");
-  s1 += " ";
+  s1 += String(" ");
   s1 += String("string");
 
   String s2 = String("some ") + String("string");
@@ -72,10 +72,10 @@ TEST(String, Mult) {
   String s1("ABC");
   s1 *= 2;
 
-  EXPECT_EQ(s1, String("ABCABCABC"));
+  EXPECT_EQ(s1, String("ABCABC"));
 
   String s2 = s1 * 3;
-  EXPECT_EQ(s2, String("ABCABCABCABCABCABCABCABCABC"));
+  EXPECT_EQ(s2, String("ABCABCABCABCABCABC"));
 }
 
 TEST(String, Trim) {
@@ -94,14 +94,14 @@ TEST(String, Trim) {
 TEST(String, Find) {
   String s1("some string");
 
-  EXPECT_EQ(4, s1.Find(" "));
-  EXPECT_EQ(5, s1.Find("str"));
-  EXPECT_EQ(0, s1.Find("some"));
-  
+  EXPECT_EQ(4, s1.Find(String(" ")));
+  EXPECT_EQ(5, s1.Find(String("str")));
+  EXPECT_EQ(0, s1.Find(String("some")));
+
   EXPECT_EQ(9, String{"str stri string"}.Find(String{"string"}));
   EXPECT_EQ(6, String{"strinsstring"}.Find(String{"string"}));
 
-  EXPECT_EQ(static_cast<size_t>(-1), s1.Find("not found"));
+  EXPECT_EQ(static_cast<size_t>(-1), s1.Find(String("not found")));
 }
 
 TEST(String, Stream) {
@@ -115,13 +115,12 @@ TEST(String, Stream) {
 TEST(String, Swap) {
   String s0("some string");
   String s1("other string");
-  
 
-  EXPECT_EQ("some string", s0);
-  EXPECT_EQ("other string", s1);
+  EXPECT_EQ(String("some string"), s0);
+  EXPECT_EQ(String("other string"), s1);
 
   s0.swap(s1);
 
-  EXPECT_EQ("other string", s0);
-  EXPECT_EQ("some string", s1);
+  EXPECT_EQ(String("other string"), s0);
+  EXPECT_EQ(String("some string"), s1);
 }
